@@ -9,7 +9,6 @@ users = []
 users_on_system = []
 new_password = "CH$Nationals2025!"
 
-# ENUSER PROGRAM IS RUN AS SUDO
 
 def get_users():
   global users_on_system
@@ -76,11 +75,15 @@ def change_user_permissions(users):
       print("Removed " + user + "'s admin permissions")
 
 
+get_users()
+
+if not is_admin(current_user):
+  print("Run program again as admin")
+  exit
+
 print("Paste the users list when prompted")
 time.sleep(2)
 subprocess.run("nano users.txt", shell = True, executable = "/bin/bash")
-
-get_users()
 
 for user in users_on_system:
   delete_user_if_does_not_belong(user)
