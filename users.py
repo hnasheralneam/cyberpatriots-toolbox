@@ -1,3 +1,7 @@
+# Hamza Nasher-Alneam
+# GPLv3-or-later
+# This script is intended for a Debian-based system and may not function as intended on other systems
+
 import time
 import subprocess
 import getpass
