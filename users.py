@@ -1,6 +1,6 @@
 # Hamza Nasher-Alneam
 # GPLv3-or-later
-# This script is intended for a Debian-based system and may not function as intended on other systems
+# This script is intended for a Debian-based system and may not function as intended on other distrobutions
 
 import time
 import subprocess
