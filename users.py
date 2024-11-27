@@ -50,7 +50,7 @@ def add_user_if_does_not_exist(user):
 
 def delete_user_if_does_not_belong(user):
   # check if user is not in admin or users list
-  if not (user in admins or user in users):
+  if user not in (admins + users):
     print("Removed unauthorized user " + user)
     subprocess.run("sudo userdel -r " + user, shell = True, executable = "/bin/bash")
 
@@ -74,36 +74,40 @@ def change_user_permissions(users):
     if user in admins and not is_admin(user):
       subprocess.run("sudo usermod -aG sudo " + user, shell = True, executable = "/bin/bash")
       print("Changed " + user + " permissions to admin")
-    elif user in users and is_admin(user):
+    elif not (user in admins) and is_admin(user):
       subprocess.run("sudo usermod -rG sudo " + user, shell = True, executable = "/bin/bash")
       print("Removed " + user + "'s admin permissions")
 
 
-get_users()
 
+# Exit if program is not run as admin
 if not is_admin(current_user):
   print("Run program again as admin")
   exit
+
+# Gather users on system and in requirements
+get_users()
 
 print("Paste the users list when prompted")
 time.sleep(2)
 subprocess.run("nano users.txt", shell = True, executable = "/bin/bash")
 
-for user in users_on_system:
-  delete_user_if_does_not_belong(user)
-
 filename = 'users.txt'
 parse_user_file(filename)
 
-for admin in admins:
-  add_user_if_does_not_exist(admin)
+# Delete and add users to requirements
+all_users = admins + users
 
-for user in users:
+for user in users_on_system:
+  delete_user_if_does_not_belong(user)
+
+for user in all_users:
   add_user_if_does_not_exist(user)
 
-all_users = admins + users
+# Change permissions
 change_user_permissions(all_users)
 
+# Change password for all users
 change_users_passwords(admins)
 change_users_passwords(users)
 
