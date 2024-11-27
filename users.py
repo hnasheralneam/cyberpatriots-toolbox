@@ -75,7 +75,7 @@ def change_user_permissions(users):
       subprocess.run("sudo usermod -aG sudo " + user, shell = True, executable = "/bin/bash")
       print("Changed " + user + " permissions to admin")
     elif not (user in admins) and is_admin(user):
-      subprocess.run("sudo usermod -rG sudo " + user, shell = True, executable = "/bin/bash")
+      subprocess.run("sudo gpasswd --delete " + user + "sudo", shell = True, executable = "/bin/bash")
       print("Removed " + user + "'s admin permissions")
 
 
